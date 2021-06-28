@@ -1,3 +1,3 @@
-module github.com/kirovj
+module kgb
 
 go 1.16
