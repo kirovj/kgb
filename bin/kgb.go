@@ -78,7 +78,7 @@ func main() {
 	for i, fileInfo := range dir {
 		blog := newBlog(i, strings.Split(fileInfo.Name(), "_")[0], fileInfo.Name(), getTime(fileInfo.Name()))
 		blogs = append(blogs, blog)
-		md := blogDir + `\` + blog.Filepath
+		md := blogDir + `/` + blog.Filepath
 		blogGroup.GET(fmt.Sprint(i), func(c *girov.Context) {
 			//c.MD(http.StatusOK, md, md2html)
 			c.HTMLFromMD(http.StatusOK, "blog.tmpl", md, md2html)
