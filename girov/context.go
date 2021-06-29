@@ -3,6 +3,7 @@ package girov
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"net/http"
 )
 
@@ -70,13 +71,13 @@ func (c *Context) SetHeader(key string, value string) {
 }
 
 func (c *Context) String(code int, format string, values ...interface{}) {
-	c.SetHeader(HEADER_CONTENT_TYPE, "text/plain")
+	c.SetHeader(HeaderContentType, "text/plain")
 	c.Status(code)
 	c.Writer.Write([]byte(fmt.Sprintf(format, values...)))
 }
 
 func (c *Context) JSON(code int, obj interface{}) {
-	c.SetHeader(HEADER_CONTENT_TYPE, "application/json")
+	c.SetHeader(HeaderContentType, "application/json")
 	c.Status(code)
 	encoder := json.NewEncoder(c.Writer)
 	if err := encoder.Encode(obj); err != nil {
@@ -90,15 +91,23 @@ func (c *Context) Data(code int, data []byte) {
 }
 
 func (c *Context) HTML(code int, name string, data interface{}) {
-	c.SetHeader(HEADER_CONTENT_TYPE, "text/html")
+	c.SetHeader(HeaderContentType, "text/html")
 	c.Status(code)
 	if err := c.engine.htmlTemplates.ExecuteTemplate(c.Writer, name, data); err != nil {
 		c.Fail(500, err.Error())
 	}
 }
 
-func (c *Context) MD(code int, content string) {
-	c.SetHeader(HEADER_CONTENT_TYPE, "text/html;charset=utf-8")
+func (c *Context) HTMLFromMD(code int, name string, filepath string, f func(file string) string) {
+	c.SetHeader(HeaderContentType, "text/html")
 	c.Status(code)
-	c.Writer.Write([]byte(fmt.Sprintf(content)))
+	if err := c.engine.htmlTemplates.ExecuteTemplate(c.Writer, name, template.HTML(f(filepath))); err != nil {
+		c.Fail(500, err.Error())
+	}
+}
+
+func (c *Context) MD(code int, filepath string, f func(file string) string) {
+	c.SetHeader(HeaderContentType, "text/html;charset=utf-8")
+	c.Status(code)
+	c.Writer.Write([]byte(fmt.Sprintf(f(filepath))))
 }
