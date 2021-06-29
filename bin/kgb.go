@@ -1,4 +1,4 @@
-package kgb
+package main
 
 import (
 	"bytes"
@@ -61,7 +61,7 @@ func md2html(file string) string {
 	return buf.String()
 }
 
-func Run() {
+func main() {
 	r := girov.New()
 	blogGroup := r.Group("blog/")
 	r.LoadHtmlGlob("tmpls/*")
