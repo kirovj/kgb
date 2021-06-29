@@ -1,7 +1,7 @@
 package kgb
 
 import (
-	"kgb/internal/girov"
+	"kgb/girov"
 	"net/http"
 )
 
