@@ -32,9 +32,7 @@ try {
 	// Create a connection
 	URL url = new URL(targetURL);
 	conn = (HttpURLConnection) url.openConnection();
-
-	// SET FANCY DETAILS HERE
-
+	
 	// Starts the connection
 	conn.connect();
 
