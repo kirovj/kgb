@@ -1,3 +1,3 @@
 git pull
 go build bin/kgb.go
-./kgb
+nohup ./kgb > /dev/null 2>&1 &
