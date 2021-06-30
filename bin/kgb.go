@@ -76,15 +76,15 @@ func getBlogs() {
 }
 
 func main() {
-	r := girov.New()
+	r := girov.Default()
 	blogGroup := r.Group("blog/")
 	r.LoadHtmlGlob("../tmpls/*")
 	r.Static("/static", "../static")
 
+	// url for each blog, update every minutes
 	go func() {
 		for {
 			getBlogs()
-			// url for each blog
 			for _, blog := range blogs {
 				md := blogDir + `/` + blog.Filepath
 				blogGroup.GET(fmt.Sprint(blog.Id), func(c *girov.Context) {
@@ -103,8 +103,4 @@ func main() {
 	})
 
 	_ = r.Run(":9999")
-
-	r.GET("/test", func(c *girov.Context) {
-		c.String(http.StatusOK, "asd")
-	})
 }
