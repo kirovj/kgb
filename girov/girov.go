@@ -2,7 +2,6 @@ package girov
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 	"path"
 	"strings"
@@ -72,7 +71,7 @@ func (group *RouterGroup) Group(prefix string) *RouterGroup {
 // addRoute 增加路由
 func (group *RouterGroup) addRoute(method string, comp string, handler HandlerFunc) {
 	pattern := group.prefix + comp
-	log.Printf("Route %4s - %s", method, pattern)
+	//log.Printf("Route %4s - %s", method, pattern)
 	group.engine.router.addRoute(method, pattern, handler)
 }
 

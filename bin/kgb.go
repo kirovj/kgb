@@ -14,7 +14,8 @@ import (
 )
 
 var (
-	blogDir  = "blogs"
+	blogDir  = "../blogs"
+	blogs    []*Blog
 	markdown = goldmark.New(
 		goldmark.WithExtensions(
 			highlighting.NewHighlighting(
@@ -28,23 +29,15 @@ var (
 )
 
 type Blog struct {
-	Id       int
-	Title    string
-	Filepath string
-	Time     int64
+	Id                    int
+	Title, Filepath, Time string
 }
 
-func newBlog(id int, title string, filepath string, time int64) *Blog {
-	return &Blog{
-		Id:       id,
-		Title:    title,
-		Filepath: filepath,
-		Time:     time,
-	}
-}
-
-func getTime(name string) int64 {
-	return time.Now().Unix()
+func getTime(name string) string {
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	timeStr := strings.Split(name, "_")[0]
+	timeObj, _ := time.ParseInLocation("2006-1-2", timeStr, loc)
+	return timeObj.Format("2006-01-02")
 }
 
 func md2html(file string) string {
@@ -53,7 +46,6 @@ func md2html(file string) string {
 		fmt.Println(err)
 		return ""
 	}
-
 	var buf bytes.Buffer
 	if err := markdown.Convert(content, &buf); err != nil {
 		return ""
@@ -61,29 +53,47 @@ func md2html(file string) string {
 	return buf.String()
 }
 
-func main() {
-	r := girov.New()
-	blogGroup := r.Group("blog/")
-	r.LoadHtmlGlob("tmpls/*")
-	r.Static("/assets", "./static")
-
-	var blogs []*Blog
-
+func getBlogs() {
 	dir, err := ioutil.ReadDir(blogDir)
 	if err != nil {
 		fmt.Println(err)
 	}
+	var tmp []*Blog
 
-	// url for each blog
-	for i, fileInfo := range dir {
-		blog := newBlog(i, strings.Split(fileInfo.Name(), "_")[0], fileInfo.Name(), getTime(fileInfo.Name()))
-		blogs = append(blogs, blog)
-		md := blogDir + `/` + blog.Filepath
-		blogGroup.GET(fmt.Sprint(i), func(c *girov.Context) {
-			//c.MD(http.StatusOK, md, md2html)
-			c.HTMLFromMD(http.StatusOK, "blog.tmpl", md, md2html)
-		})
+	for i := len(dir) - 1; i >= 0; i-- {
+		fileInfo := dir[i]
+		if !fileInfo.IsDir() {
+			blog := &Blog{
+				Id:       i,
+				Title:    strings.ReplaceAll(strings.Split(fileInfo.Name(), "_")[1], ".md", ""),
+				Filepath: fileInfo.Name(),
+				Time:     getTime(fileInfo.Name()),
+			}
+			tmp = append(tmp, blog)
+		}
 	}
+	blogs = tmp
+}
+
+func main() {
+	r := girov.New()
+	blogGroup := r.Group("blog/")
+	r.LoadHtmlGlob("../tmpls/*")
+	r.Static("/static", "../static")
+
+	go func() {
+		for {
+			getBlogs()
+			// url for each blog
+			for _, blog := range blogs {
+				md := blogDir + `/` + blog.Filepath
+				blogGroup.GET(fmt.Sprint(blog.Id), func(c *girov.Context) {
+					c.HTMLFromMD(http.StatusOK, "blog.tmpl", md, md2html)
+				})
+			}
+			time.Sleep(time.Minute)
+		}
+	}()
 
 	// url for blog index
 	r.GET("/", func(c *girov.Context) {
@@ -93,4 +103,8 @@ func main() {
 	})
 
 	_ = r.Run(":9999")
+
+	r.GET("/test", func(c *girov.Context) {
+		c.String(http.StatusOK, "asd")
+	})
 }
