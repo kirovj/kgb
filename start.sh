@@ -1,4 +1,5 @@
+ps auwx | grep "kgb" | grep -v "grep" | grep "wyt" | awk '{print $2}' | xargs kill -9
 git pull
-source /etc/profile
-go build bin/kgb.go
+cd bin
+go build kgb.go
 nohup ./kgb > /dev/null 2>&1 &
