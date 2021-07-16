@@ -3,19 +3,28 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/alecthomas/chroma/formatters/html"
-	"github.com/yuin/goldmark"
-	"github.com/yuin/goldmark-highlighting"
 	"io/ioutil"
 	"kgb/girov"
 	"net/http"
+	"sort"
 	"strings"
 	"time"
+
+	"github.com/alecthomas/chroma/formatters/html"
+	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting"
 )
+
+type Blog struct {
+	Id                    int
+	Title, Filepath, Time string
+}
+
+type BlogList []*Blog
 
 var (
 	blogDir  = "../blogs"
-	blogs    []*Blog
+	blogs    BlogList
 	markdown = goldmark.New(
 		goldmark.WithExtensions(
 			highlighting.NewHighlighting(
@@ -28,9 +37,18 @@ var (
 	)
 )
 
-type Blog struct {
-	Id                    int
-	Title, Filepath, Time string
+func (b BlogList) Len() int {
+	return len(b)
+}
+
+func (b BlogList) Less(i, j int) bool {
+	t1, _ := time.Parse("2006-01-02", b[i].Time)
+	t2, _ := time.Parse("2006-01-02", b[j].Time)
+	return t1.Unix() > t2.Unix()
+}
+
+func (b BlogList) Swap(i, j int) {
+	b[i], b[j] = b[j], b[i]
 }
 
 func getTime(name string) string {
@@ -58,7 +76,7 @@ func getBlogs() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	var tmp []*Blog
+	var tmp BlogList
 
 	for i := len(dir) - 1; i >= 0; i-- {
 		fileInfo := dir[i]
@@ -73,6 +91,7 @@ func getBlogs() {
 		}
 	}
 	blogs = tmp
+	sort.Sort(blogs)
 }
 
 func main() {
