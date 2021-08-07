@@ -80,7 +80,7 @@ ET
 ```
 >  不同于 word ， pdf 的语言则更像是在控制机器，定位、调整、落笔、抬起，移动到下一行；如此重复。
 
-当然，以上只是 pdf 中很小部分的介绍，详细的可以看下 adobe 公司的 pdf 标准文件：[https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf](https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf)
+当然，以上只是 pdf 中很小部分的介绍，详细的可以看下 adobe 公司的[ pdf 标准文件](https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf)。
 
 以及一些延伸阅读：
 
@@ -90,7 +90,7 @@ ET
 * [John Whitington, PDF Explained (O'Reilly Media, 2011)](https://github.com/zxyle/PDF-Explained): 动物园丛书里介绍 PDF 的不止一本，这本年代偏久远，但是个人认为是相比之下讲得比较清晰的。
 * [GitHub - PDF 101 - Learn and Play with PDF Source Code](https://github.com/angea/PDF101): 一个非常有意思的 GitHub 仓库，里面提供了大量手敲代码制成的 PDF，用文本编辑器打开按照里面的注释就可以像玩游戏一样做各种「实验」，对理解 PDF 格式非常有帮助。
 
-> 参考：[理解数字世界中的纸张：PDF | 科普](https://zhuanlan.zhihu.com/p/44360779)
+> 👆🏻感谢：[理解数字世界中的纸张：PDF | 科普](https://zhuanlan.zhihu.com/p/44360779)
 
 ---
 
