@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"kgb/girov"
 	"net/http"
+	"os/exec"
 	"sort"
 	"strings"
 	"time"
@@ -103,6 +104,7 @@ func main() {
 	// url for each blog, update every minutes
 	go func() {
 		for {
+			exec.Command("sh", "-c", "git pull origin main").Run()
 			getBlogs()
 			for _, blog := range blogs {
 				md := blogDir + `/` + blog.Filepath
