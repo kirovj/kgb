@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"kgb/girov"
 	"net/http"
 	"os/exec"
 	"sort"
@@ -12,6 +11,7 @@ import (
 	"time"
 
 	"github.com/alecthomas/chroma/formatters/html"
+	"github.com/gin-gonic/gin"
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting"
 )
@@ -59,18 +59,18 @@ func getTime(name string) string {
 	return timeObj.Format("2006-01-02")
 }
 
-func md2html(file string) string {
-	content, err := ioutil.ReadFile(file)
-	if err != nil {
-		fmt.Println(err)
-		return ""
-	}
-	var buf bytes.Buffer
-	if err := markdown.Convert(content, &buf); err != nil {
-		return ""
-	}
-	return buf.String()
-}
+// func md2html(file string) string {
+// 	content, err := ioutil.ReadFile(file)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return ""
+// 	}
+// 	var buf bytes.Buffer
+// 	if err := markdown.Convert(content, &buf); err != nil {
+// 		return ""
+// 	}
+// 	return buf.String()
+// }
 
 func getBlogs() {
 	dir, err := ioutil.ReadDir(blogDir)
@@ -95,10 +95,26 @@ func getBlogs() {
 	sort.Sort(blogs)
 }
 
+// func HTMLFromMD() gin.HandlerFunc {
+// 	return func(c *gin.Context) {
+// 		file := c.GetString("mdFile")
+// 		content, err := ioutil.ReadFile(file)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 		}
+// 		var buf bytes.Buffer
+// 		if err := markdown.Convert(content, &buf); err != nil {
+// 			fmt.Println(err)
+// 		}
+// 		c.Set("md", buf.String())
+// 		c.Next()
+// 	}
+// }
+
 func main() {
-	r := girov.Default()
+	r := gin.Default()
 	blogGroup := r.Group("blog/")
-	r.LoadHtmlGlob("../tmpls/*")
+	r.LoadHTMLGlob("../tmpls/*")
 	r.Static("/static", "../static")
 
 	// url for each blog, update every minutes
@@ -108,8 +124,17 @@ func main() {
 			getBlogs()
 			for _, blog := range blogs {
 				md := blogDir + `/` + blog.Filepath
-				blogGroup.GET(fmt.Sprint(blog.Id), func(c *girov.Context) {
-					c.HTMLFromMD(http.StatusOK, "blog.tmpl", md, md2html)
+				blogGroup.GET(fmt.Sprint(blog.Id), func(c *gin.Context) {
+					content, err := ioutil.ReadFile(md)
+					if err != nil {
+						fmt.Println(err)
+					}
+					var buf bytes.Buffer
+					if err := markdown.Convert(content, &buf); err != nil {
+						fmt.Println(err)
+					}
+
+					c.HTML(http.StatusOK, "blog.tmpl", buf.String())
 				})
 			}
 			time.Sleep(time.Minute)
@@ -117,8 +142,8 @@ func main() {
 	}()
 
 	// url for blog index
-	r.GET("/", func(c *girov.Context) {
-		c.HTML(http.StatusOK, "index.tmpl", girov.H{
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.tmpl", gin.H{
 			"blogs": blogs,
 		})
 	})
