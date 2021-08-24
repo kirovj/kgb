@@ -3,11 +3,7 @@
 ps auwx | grep "kgb" | grep -v "grep" | grep "wyt" | awk '{print $2}' | xargs kill -9
 
 echo "git pull code..."
-git pull
-
-cd bin
-
-rm kgb
+git pull origin main
 
 echo "start go build..."
 
