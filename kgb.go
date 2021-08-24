@@ -105,6 +105,7 @@ func main() {
 		c.HTML(http.StatusOK, "blog.tmpl", template.HTML(buf.String()))
 	})
 
+	// update blogList
 	go func() {
 		for {
 			getBlogs()
