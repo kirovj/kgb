@@ -32,7 +32,7 @@
     <ul class="homepage-list">
         {{range $blog := .blogs}}
         <li>
-            <a href="/blog/{{$blog.Filepath}}">{{$blog.Title}}</a>
+            <a href="/blog/{{$blog.Title}}">{{$blog.Title}}</a>
             <time>{{$blog.Time}}</time>
         </li>
         {{end}}

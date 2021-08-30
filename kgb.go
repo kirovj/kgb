@@ -19,14 +19,19 @@ import (
 
 type Blog struct {
 	Id                    int
-	Title, Filepath, Time string
+	Time                  time.Time
+	Text                  template.HTML
+	Title, Filepath, Date string
 }
 
 type BlogList []*Blog
 
+type BlogMap map[string]*Blog
+
 var (
 	blogDir  = "blogs"
 	blogs    BlogList
+	blogMap  = make(BlogMap)
 	markdown = goldmark.New(
 		goldmark.WithExtensions(
 			highlighting.NewHighlighting(
@@ -44,8 +49,8 @@ func (b BlogList) Len() int {
 }
 
 func (b BlogList) Less(i, j int) bool {
-	t1, _ := time.Parse("2006-01-02", b[i].Time)
-	t2, _ := time.Parse("2006-01-02", b[j].Time)
+	t1, _ := time.Parse("2006-01-02", b[i].Date)
+	t2, _ := time.Parse("2006-01-02", b[j].Date)
 	return t1.Unix() > t2.Unix()
 }
 
@@ -53,14 +58,24 @@ func (b BlogList) Swap(i, j int) {
 	b[i], b[j] = b[j], b[i]
 }
 
-func getTime(name string) string {
+func dateFormat(name string) string {
 	loc, _ := time.LoadLocation("Asia/Shanghai")
 	timeStr := strings.Split(name, "_")[0]
 	timeObj, _ := time.ParseInLocation("2006-1-2", timeStr, loc)
 	return timeObj.Format("2006-01-02")
 }
 
-func getBlogs() {
+func readMd(filePath string) string {
+	if content, err := ioutil.ReadFile(filePath); err == nil {
+		var buf bytes.Buffer
+		if err = markdown.Convert(content, &buf); err == nil {
+			return buf.String()
+		}
+	}
+	return ""
+}
+
+func update() {
 	exec.Command("sh", "-c", "git pull origin main").Run()
 	dir, err := ioutil.ReadDir(blogDir)
 	if err != nil {
@@ -73,11 +88,16 @@ func getBlogs() {
 		if !fileInfo.IsDir() {
 			blog := &Blog{
 				Id:       i,
+				Time:     fileInfo.ModTime(),
 				Title:    strings.ReplaceAll(strings.Split(fileInfo.Name(), "_")[1], ".md", ""),
 				Filepath: fileInfo.Name(),
-				Time:     getTime(fileInfo.Name()),
+				Date:     dateFormat(fileInfo.Name()),
+				Text:     template.HTML(readMd(blogDir + `/` + fileInfo.Name())),
 			}
+			// update blog list
 			tmp = append(tmp, blog)
+			// update blog map
+			blogMap[blog.Title] = blog
 		}
 	}
 	blogs = tmp
@@ -91,24 +111,13 @@ func main() {
 
 	// url for each blog, update every minutes
 	r.GET("blog/:title", func(c *gin.Context) {
-		var (
-			content []byte
-			err     error
-			buf     bytes.Buffer
-		)
-		if content, err = ioutil.ReadFile(blogDir + `/` + c.Param("title")); err != nil {
-			fmt.Println(err)
-		}
-		if err = markdown.Convert(content, &buf); err != nil {
-			fmt.Println(err)
-		}
-		c.HTML(http.StatusOK, "blog.tmpl", template.HTML(buf.String()))
+		c.HTML(http.StatusOK, "blog.tmpl", blogMap[c.Param("title")].Text)
 	})
 
-	// update blogList
+	// update blogs
 	go func() {
 		for {
-			getBlogs()
+			update()
 			time.Sleep(time.Minute)
 		}
 	}()
