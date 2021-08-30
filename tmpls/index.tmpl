@@ -33,7 +33,7 @@
         {{range $blog := .blogs}}
         <li>
             <a href="/blog/{{$blog.Title}}">{{$blog.Title}}</a>
-            <time>{{$blog.Time}}</time>
+            <time>{{$blog.Date}}</time>
         </li>
         {{end}}
     </ul>
