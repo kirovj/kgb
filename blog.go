@@ -8,35 +8,35 @@ import (
 	"time"
 )
 
-type blog struct {
-	time              time.Time
-	text              template.HTML
-	title, file, date string
+type Blog struct {
+	Time              time.Time
+	Text              template.HTML
+	Title, File, Date string
 }
 
-type blogList []*blog
+type BlogList []*Blog
 
-func (b blogList) Len() int {
+func (b BlogList) Len() int {
 	return len(b)
 }
 
-func (b blogList) Less(i, j int) bool {
-	t1, _ := time.Parse("2006-01-02", b[i].date)
-	t2, _ := time.Parse("2006-01-02", b[j].date)
+func (b BlogList) Less(i, j int) bool {
+	t1, _ := time.Parse("2006-01-02", b[i].Date)
+	t2, _ := time.Parse("2006-01-02", b[j].Date)
 	return t1.Unix() > t2.Unix()
 }
 
-func (b blogList) Swap(i, j int) {
+func (b BlogList) Swap(i, j int) {
 	b[i], b[j] = b[j], b[i]
 }
 
-func newBlog(time time.Time, fileName string) *blog {
-	return &blog{
-		time:  time,
-		text:  getHTML(blogDir + `/` + fileName),
-		title: strings.ReplaceAll(strings.Split(fileName, "_")[1], ".md", ""),
-		file:  fileName,
-		date:  getDate(fileName),
+func newBlog(time time.Time, fileName string) *Blog {
+	return &Blog{
+		Time:  time,
+		Text:  getHTML(blogDir + `/` + fileName),
+		Title: strings.ReplaceAll(strings.Split(fileName, "_")[1], ".md", ""),
+		File:  fileName,
+		Date:  getDate(fileName),
 	}
 }
 

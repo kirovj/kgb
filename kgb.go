@@ -16,8 +16,8 @@ import (
 
 var (
 	blogDir  = "blogs"
-	blogs    blogList
-	blogMap  = make(map[string]*blog)
+	blogs    BlogList
+	blogMap  = make(map[string]*Blog)
 	markdown = goldmark.New(
 		goldmark.WithExtensions(
 			highlighting.NewHighlighting(
@@ -36,7 +36,7 @@ func update() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	var tmp blogList
+	var tmp BlogList
 
 	for i := len(dir) - 1; i >= 0; i-- {
 		fileInfo := dir[i]
@@ -45,7 +45,7 @@ func update() {
 			// update blog list
 			tmp = append(tmp, blog)
 			// update blog map
-			blogMap[blog.title] = blog
+			blogMap[blog.Title] = blog
 		}
 	}
 	blogs = tmp
@@ -59,7 +59,7 @@ func main() {
 
 	// url for each blog, update every minutes
 	r.GET("blog/:title", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "blog.tmpl", blogMap[c.Param("title")].text)
+		c.HTML(http.StatusOK, "blog.tmpl", blogMap[c.Param("title")].Text)
 	})
 
 	// update blogs
