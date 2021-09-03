@@ -2,9 +2,10 @@ package main
 
 import (
 	"bytes"
-	"fmt"
+	"encoding/json"
 	"html/template"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"os/exec"
 	"sort"
@@ -49,6 +50,30 @@ func newBlog(time time.Time, fileName string) *Blog {
 	}
 }
 
+type Motto struct {
+	Main   string `json:"main"`
+	Source string `json:"source"`
+}
+
+type MottoList []*Motto
+
+var (
+	blogDir  = "blogs"
+	blogs    BlogList
+	blogMap  = make(map[string]*Blog)
+	mottos   MottoList
+	markdown = goldmark.New(
+		goldmark.WithExtensions(
+			highlighting.NewHighlighting(
+				highlighting.WithStyle("monokai"),
+				highlighting.WithFormatOptions(
+					html.WithLineNumbers(false),
+				),
+			),
+		),
+	)
+)
+
 func getDate(name string) string {
 	loc, _ := time.LoadLocation("Asia/Shanghai")
 	timeStr := strings.Split(name, "_")[0]
@@ -66,27 +91,14 @@ func getHTML(filePath string) template.HTML {
 	return ""
 }
 
-var (
-	blogDir  = "blogs"
-	blogs    BlogList
-	blogMap  = make(map[string]*Blog)
-	markdown = goldmark.New(
-		goldmark.WithExtensions(
-			highlighting.NewHighlighting(
-				highlighting.WithStyle("monokai"),
-				highlighting.WithFormatOptions(
-					html.WithLineNumbers(false),
-				),
-			),
-		),
-	)
-)
+func randomMotto() *Motto {
+	return mottos[rand.Intn(len(mottos))]
+}
 
-func update() {
-	exec.Command("sh", "-c", "git pull origin main").Run()
+func updateBlogs() {
 	dir, err := ioutil.ReadDir(blogDir)
 	if err != nil {
-		fmt.Println(err)
+		return
 	}
 	var tmp BlogList
 
@@ -94,14 +106,33 @@ func update() {
 		fileInfo := dir[i]
 		if !fileInfo.IsDir() {
 			blog := newBlog(fileInfo.ModTime(), fileInfo.Name())
-			// update blog list
 			tmp = append(tmp, blog)
-			// update blog map
 			blogMap[blog.Title] = blog
 		}
 	}
 	blogs = tmp
 	sort.Sort(blogs)
+}
+
+func updateMottos() {
+	var (
+		tmp  MottoList
+		file []byte
+		err  error
+	)
+	if file, err = ioutil.ReadFile("motto/motto.json"); err != nil {
+		return
+	}
+	if err = json.Unmarshal(file, &tmp); err != nil {
+		return
+	}
+	mottos = tmp
+}
+
+func update() {
+	exec.Command("sh", "-c", "git pull origin main").Run()
+	updateBlogs()
+	updateMottos()
 }
 
 func main() {
@@ -111,7 +142,10 @@ func main() {
 
 	// url for each blog, update every minutes
 	r.GET("blog/:title", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "blog.tmpl", blogMap[c.Param("title")].Text)
+		c.HTML(http.StatusOK, "blog.tmpl", gin.H{
+			"blog":  blogMap[c.Param("title")],
+			"motto": randomMotto(),
+		})
 	})
 
 	// update blogs
@@ -126,7 +160,13 @@ func main() {
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
 			"blogs": blogs,
+			"motto": randomMotto(),
 		})
+	})
+
+	// url for motto
+	r.GET("motto/random", func(c *gin.Context) {
+		c.JSON(http.StatusOK, randomMotto())
 	})
 
 	_ = r.Run(":9999")
