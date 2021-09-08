@@ -1,7 +1,8 @@
 # ByteBuffer & Channel
 
-## 1. ByteBuffer
-### ByteBuffer 用来缓冲读写数据，常见的有
+### 1. ByteBuffer
+> ByteBuffer 用来缓冲读写数据，常见的有
+
     * ByteBuffer
       * MappedByteBuffer
       * DirectByteBuffer
@@ -13,14 +14,15 @@
     * DoubleBuffer
     * CharBuffer
 
-## 2. Channel 
-### Channel 有一点类似于 stream，它就是读写数据的**双向通道**，可以从 channel 将数据读入 buffer，也可以将 buffer 的数据写入 channel，而之前的 stream 要么是输入，要么是输出，channel 比 stream 更为底层，常见的有
+### 2. Channel 
+> Channel 有一点类似于 stream，它就是读写数据的**双向通道**，可以从 channel 将数据读入 buffer，也可以将 buffer 的数据写入 channel，而之前的 stream 要么是输入，要么是输出，channel 比 stream 更为底层，常见的有
+
     * FileChannel
     * DatagramChannel
     * SocketChannel
     * ServerSocketChannel
 
-## 3. 使用 FileChannel 来读取文件内容
+### 3. 使用 FileChannel 来读取文件内容
 ```java
 // FileChannel
 // 1.In/OutputStream 2. RandomAccessFile
