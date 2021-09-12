@@ -63,7 +63,7 @@ var (
 	blogs    BlogList
 	blogMap  = make(map[string]*Blog)
 	mottos   MottoList
-	log      = lazer.Default()
+	log      = lazer.NewLogger(lazer.NewFileWriter("lazer.log"), 30, 10)
 	markdown = goldmark.New(
 		goldmark.WithExtensions(
 			highlighting.NewHighlighting(
