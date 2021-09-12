@@ -14,6 +14,7 @@ import (
 
 	"github.com/alecthomas/chroma/formatters/html"
 	"github.com/gin-gonic/gin"
+	"github.com/kirovj/lazer"
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting"
 )
@@ -62,6 +63,7 @@ var (
 	blogs    BlogList
 	blogMap  = make(map[string]*Blog)
 	mottos   MottoList
+	log      = lazer.Default()
 	markdown = goldmark.New(
 		goldmark.WithExtensions(
 			highlighting.NewHighlighting(
@@ -98,6 +100,7 @@ func randomMotto() *Motto {
 func updateBlogs() {
 	dir, err := ioutil.ReadDir(blogDir)
 	if err != nil {
+		log.Error("update blogs error: " + err.Error())
 		return
 	}
 	var tmp BlogList
@@ -124,6 +127,7 @@ func updateMottos() {
 		return
 	}
 	if err = json.Unmarshal(file, &tmp); err != nil {
+		log.Error("update mottos error: " + err.Error())
 		return
 	}
 	mottos = tmp
@@ -158,6 +162,7 @@ func main() {
 
 	// url for blog index
 	r.GET("/", func(c *gin.Context) {
+		log.Info(c.ClientIP() + " access /")
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
 			"blogs": blogs,
 			"motto": randomMotto(),
