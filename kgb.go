@@ -146,6 +146,7 @@ func main() {
 
 	// url for each blog, update every minutes
 	r.GET("blog/:title", func(c *gin.Context) {
+		log.Info(c.ClientIP() + " access " + c.FullPath())
 		c.HTML(http.StatusOK, "blog.tmpl", gin.H{
 			"blog":  blogMap[c.Param("title")],
 			"motto": randomMotto(),
@@ -171,6 +172,7 @@ func main() {
 
 	// url for motto
 	r.GET("motto/random", func(c *gin.Context) {
+		log.Info(c.ClientIP() + " access " + c.FullPath())
 		c.JSON(http.StatusOK, randomMotto())
 	})
 
