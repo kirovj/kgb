@@ -51,18 +51,18 @@ func newBlog(time time.Time, fileName string) *Blog {
 	}
 }
 
-type Motto struct {
+type Note struct {
 	Main   string `json:"main"`
 	Source string `json:"source"`
 }
 
-type MottoList []*Motto
+type NoteList []*Note
 
 var (
 	blogDir  = "blogs"
 	blogs    BlogList
 	blogMap  = make(map[string]*Blog)
-	mottos   MottoList
+	notes    NoteList
 	log      = lazer.NewLogger(lazer.NewFileWriter("lazer.log"), 30, 10)
 	markdown = goldmark.New(
 		goldmark.WithExtensions(
@@ -93,8 +93,8 @@ func getHTML(filePath string) template.HTML {
 	return ""
 }
 
-func randomMotto() *Motto {
-	return mottos[rand.Intn(len(mottos))]
+func randomNote() *Note {
+	return notes[rand.Intn(len(notes))]
 }
 
 func updateBlogs() {
@@ -117,9 +117,9 @@ func updateBlogs() {
 	sort.Sort(blogs)
 }
 
-func updateMottos() {
+func updateNotes() {
 	var (
-		tmp  MottoList
+		tmp  NoteList
 		file []byte
 		err  error
 	)
@@ -130,13 +130,13 @@ func updateMottos() {
 		log.Error("update mottos error: " + err.Error())
 		return
 	}
-	mottos = tmp
+	notes = tmp
 }
 
 func update() {
 	exec.Command("sh", "-c", "git pull origin main").Run()
 	updateBlogs()
-	updateMottos()
+	updateNotes()
 }
 
 func main() {
@@ -149,7 +149,7 @@ func main() {
 		log.Info(c.ClientIP() + " access " + c.FullPath())
 		c.HTML(http.StatusOK, "blog.tmpl", gin.H{
 			"blog":  blogMap[c.Param("title")],
-			"motto": randomMotto(),
+			"motto": randomNote(),
 		})
 	})
 
@@ -166,14 +166,14 @@ func main() {
 		log.Info(c.ClientIP() + " access /")
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
 			"blogs": blogs,
-			"motto": randomMotto(),
+			"motto": randomNote(),
 		})
 	})
 
 	// url for motto
-	r.GET("motto/random", func(c *gin.Context) {
+	r.GET("note/random", func(c *gin.Context) {
 		log.Info(c.ClientIP() + " access " + c.FullPath())
-		c.JSON(http.StatusOK, randomMotto())
+		c.JSON(http.StatusOK, randomNote())
 	})
 
 	_ = r.Run(":9999")
