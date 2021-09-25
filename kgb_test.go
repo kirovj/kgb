@@ -2,6 +2,6 @@ package main
 
 import "testing"
 
-func Test_updateMottos(t *testing.T) {
+func Test_updateNotes(t *testing.T) {
 	updateNotes()
 }

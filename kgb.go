@@ -123,18 +123,22 @@ func updateNotes() {
 		file []byte
 		err  error
 	)
-	if file, err = ioutil.ReadFile("motto/motto.json"); err != nil {
+	if file, err = ioutil.ReadFile("notes/notes.json"); err != nil {
 		return
 	}
 	if err = json.Unmarshal(file, &tmp); err != nil {
-		log.Error("update mottos error: " + err.Error())
+		log.Error("update notes error: " + err.Error())
 		return
 	}
 	notes = tmp
 }
 
 func update() {
-	exec.Command("sh", "-c", "git pull origin main").Run()
+	err := exec.Command("sh", "-c", "git pull origin main").Run()
+	if err != nil {
+		log.Error("Fetch from github failed!")
+		//return
+	}
 	updateBlogs()
 	updateNotes()
 }
@@ -146,10 +150,9 @@ func main() {
 
 	// url for each blog, update every minutes
 	r.GET("blog/:title", func(c *gin.Context) {
-		log.Info(c.ClientIP() + " access " + c.FullPath())
 		c.HTML(http.StatusOK, "blog.tmpl", gin.H{
-			"blog":  blogMap[c.Param("title")],
-			"motto": randomNote(),
+			"blog": blogMap[c.Param("title")],
+			"note": randomNote(),
 		})
 	})
 
@@ -163,17 +166,21 @@ func main() {
 
 	// url for blog index
 	r.GET("/", func(c *gin.Context) {
-		log.Info(c.ClientIP() + " access /")
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
 			"blogs": blogs,
-			"motto": randomNote(),
+			"note":  randomNote(),
 		})
 	})
 
 	// url for motto
 	r.GET("note/random", func(c *gin.Context) {
-		log.Info(c.ClientIP() + " access " + c.FullPath())
 		c.JSON(http.StatusOK, randomNote())
+	})
+
+	r.GET("note", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "note.tmpl", gin.H{
+			"notes": notes,
+		})
 	})
 
 	_ = r.Run(":9999")

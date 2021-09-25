@@ -24,20 +24,20 @@
             <small style="float:right;">
                 <a href="https://github.com/kirovj">Github</a>
             </small>
-
+            <br />
         </h3>
-        <h2 class="note">{{ .note.Main }}</h2>
+
+        <h2 class="note">谁允许你说这些话的？</h2>
     </header>
     <hr />
 
-    <article>
-        {{ .blog.Text }}
-    </article>
-
-    <br />
-    <div style="text-align:left;">
-        本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/deed.zh">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可。
-    </div>
+    <ul class="homepage-list">
+        {{range $note := .notes}}
+        <li>
+            <p class="note">{{ $note.Main }}<br />一一一一 {{ $note.Source }}</p>
+        </li>
+        {{end}}
+    </ul>
     <hr />
     <footer role="contentinfo">
         <small>
