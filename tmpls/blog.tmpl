@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <title> KGB - Kirovj Go Blog </title>
-    <meta name="description" content="kirovj go blog" />
-    <link rel="icon"  href="/static/fav.ico" />
+    <meta name="description" content="kirovj go blog"/>
+    <link rel="icon" href="/static/fav.ico"/>
     <link rel="stylesheet" href="/static/css/style.css">
     <meta property="og:site_name" content="kirovj go blog">
     <meta property="og:title" content="kirovj go blog">
@@ -18,7 +18,7 @@
     <header role="banner">
         <h3 style="margin-top:0;">
             <a href="/" title="Home">Kirovj Go Blog</a>
-            <br />
+            <br/>
             <small>Write whatever I want.</small>
 
             <small style="float:right;">
@@ -28,22 +28,30 @@
         </h3>
         <h2 class="note">{{ .note.Main }}</h2>
     </header>
-    <hr />
+    <hr/>
 
     <article>
         {{ .blog.Text }}
     </article>
 
-    <br />
+    <br/>
     <div style="text-align:left;">
         本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/deed.zh">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可。
     </div>
-    <hr />
+    <hr/>
+
+    <nav style="margin-bottom:1rem;" role="navigation">
+        <a href="/note">Note</a>
+        <!--        <span>&middot;</span>-->
+    </nav>
+
     <footer role="contentinfo">
         <small>
-            <a href="https://beian.miit.gov.cn/">浙ICP备18030011号.</a> <a href="http://www.beian.gov.cn/portal/recordQuery">浙公网安备 33011002013470</a>.<br />
-            Built with <a href="https://github.com/kirovj/kgb">KGB</a>. Theme by <a href="https://github.com/hiplon/lighthouse100-theme">HKL</a> <br />
-            Maintained with &hearts; for both web & real life.<br />
+            <a href="https://beian.miit.gov.cn/">浙ICP备18030011号.</a> <a
+                href="http://www.beian.gov.cn/portal/recordQuery">浙公网安备 33011002013470</a>.<br/>
+            Built with <a href="https://github.com/kirovj/kgb">KGB</a>. Theme by <a
+                href="https://github.com/hiplon/lighthouse100-theme">HKL</a> <br/>
+            Maintained with &hearts; for both web & real life.<br/>
         </small>
     </footer>
 </main>
