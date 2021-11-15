@@ -1,4 +1,4 @@
-# Python-defaultdict的特殊应用
+# Python defaultdict的特殊应用
 
 v2上看到的，记录一下。
 

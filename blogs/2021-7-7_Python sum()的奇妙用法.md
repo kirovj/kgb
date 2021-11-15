@@ -1,4 +1,4 @@
-# Python-sum()的奇妙用法
+# Python sum()的奇妙用法
 
 ```python
 a = [1, 4, ['a', 'a'], 5, 3]
