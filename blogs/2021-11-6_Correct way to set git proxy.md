@@ -10,7 +10,7 @@ git config –global http.proxy protocol://127.0.0.1:port
 ## _For the specified domain_
 
 ```ssh
-> git config –global http.url.proxy protocol://127.0.0.1:port
+git config –global http.url.proxy protocol://127.0.0.1:port
 ```
 > example: http.https://github.com.proxy
 
