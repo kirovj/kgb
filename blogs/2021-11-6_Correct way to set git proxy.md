@@ -1,20 +1,20 @@
 # Correct way to set git proxy
 
-## 1. When use https://github.com/user/respository.git
+### _When use https://github.com/user/respository.git_
 
 ```ssh
 git config –global http.proxy protocol://127.0.0.1:port
 ```
 > protocol & port is your proxy
 
-## 2. For the specified domain
+## _For the specified domain_
 
 ```ssh
 > git config –global http.url.proxy protocol://127.0.0.1:port
 ```
 > example: http.https://github.com.proxy
 
-## 3. When use ssh
+## _When use ssh_
 
 ```ssh
 vim ~/.ssh/config
