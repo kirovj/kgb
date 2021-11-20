@@ -1,59 +1,62 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title> KGB - Kirovj Go Blog </title>
-    <meta name="description" content="kirovj go blog"/>
-    <link rel="icon" href="/static/fav.ico"/>
+    <meta name="description" content="kirovj's blog" />
+    <link rel="icon" href="/static/fav.ico" />
     <link rel="stylesheet" href="/static/css/style.css">
-    <meta property="og:site_name" content="kirovj go blog">
-    <meta property="og:title" content="kirovj go blog">
-    <meta property="og:description" content="kirovj go blog">
+    <meta property="og:site_name" content="kirovj's blog">
+    <meta property="og:title" content="kirovj's blog">
+    <meta property="og:description" content="kirovj's blog">
     <meta property="og:url" content="https://wuyiting.cn">
 </head>
+
 <body>
-<main id="main" role="main">
-    <header role="banner">
-        <h3 style="margin-top:0;">
-            <a href="/" title="Home">Kirovj Go Blog</a>
-            <br/>
-            <small>Write whatever I want.</small>
+    <main id="main" role="main">
+        <header role="banner">
+            <h3 style="margin-top:0;">
+                <a href="/" title="Home">Kirovj</a>
+                <br />
+                <small>Write whatever I want.</small>
 
-            <small style="float:right;">
-                <a href="https://github.com/kirovj">Github</a>
+                <small style="float:right;">
+                    <a href="https://github.com/kirovj">Github</a>
+                </small>
+                <br />
+            </h3>
+
+            <h2 class="note">谁允许你说这些话的？</h2>
+        </header>
+        <hr />
+
+        <ul class="homepage-list">
+            {{range $note := .notes}}
+            <li>
+                <p class="note">{{ $note.Main }}<br />一一一一 {{ $note.Source }}</p>
+            </li>
+            {{end}}
+        </ul>
+        <hr />
+
+        <nav style="margin-bottom:1rem;" role="navigation">
+            <a href="/note">Note</a>
+            <!--        <span>&middot;</span>-->
+        </nav>
+
+        <footer role="contentinfo">
+            <small>
+                <a href="https://beian.miit.gov.cn/">浙ICP备18030011号.</a> <a
+                    href="http://www.beian.gov.cn/portal/recordQuery">浙公网安备 33011002013470</a>.<br />
+                Built with <a href="https://github.com/kirovj/kgb">KGB</a>. Theme by <a
+                    href="https://github.com/hiplon/lighthouse100-theme">HKL</a> <br />
+                Maintained with &hearts; for both web & real life.<br />
             </small>
-            <br/>
-        </h3>
-
-        <h2 class="note">谁允许你说这些话的？</h2>
-    </header>
-    <hr/>
-
-    <ul class="homepage-list">
-        {{range $note := .notes}}
-        <li>
-            <p class="note">{{ $note.Main }}<br/>一一一一 {{ $note.Source }}</p>
-        </li>
-        {{end}}
-    </ul>
-    <hr/>
-
-    <nav style="margin-bottom:1rem;" role="navigation">
-        <a href="/note">Note</a>
-        <!--        <span>&middot;</span>-->
-    </nav>
-
-    <footer role="contentinfo">
-        <small>
-            <a href="https://beian.miit.gov.cn/">浙ICP备18030011号.</a> <a
-                href="http://www.beian.gov.cn/portal/recordQuery">浙公网安备 33011002013470</a>.<br/>
-            Built with <a href="https://github.com/kirovj/kgb">KGB</a>. Theme by <a
-                href="https://github.com/hiplon/lighthouse100-theme">HKL</a> <br/>
-            Maintained with &hearts; for both web & real life.<br/>
-        </small>
-    </footer>
-</main>
+        </footer>
+    </main>
 </body>
+
 </html>
