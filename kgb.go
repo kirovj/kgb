@@ -172,7 +172,7 @@ func main() {
 		})
 	})
 
-	// url for motto
+	// url for note
 	r.GET("note/random", func(c *gin.Context) {
 		c.JSON(http.StatusOK, randomNote())
 	})
