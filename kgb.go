@@ -160,7 +160,7 @@ func main() {
 	go func() {
 		for {
 			update()
-			time.Sleep(time.Minute)
+			time.Sleep(time.Minute * 5)
 		}
 	}()
 
