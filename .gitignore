@@ -3,6 +3,7 @@ logs/
 *.xls
 *.xlsx
 *.exe
+static/img
 ### IntelliJ IDEA ###
 .idea
 *.iws
