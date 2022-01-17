@@ -17,6 +17,7 @@ import (
 	"github.com/kirovj/lazer"
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting"
+	"github.com/yuin/goldmark/extension"
 )
 
 type Blog struct {
@@ -66,6 +67,7 @@ var (
 	log      = lazer.NewLogger(lazer.NewFileWriter("lazer.log"), 30, 10)
 	markdown = goldmark.New(
 		goldmark.WithExtensions(
+			extension.GFM,
 			highlighting.NewHighlighting(
 				highlighting.WithStyle("monokai"),
 				highlighting.WithFormatOptions(
