@@ -1,5 +1,3 @@
-# Correct way to set git proxy
-
 ### _When use https://github.com/user/respository.git_
 
 ```ssh
