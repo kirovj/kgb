@@ -1,5 +1,3 @@
-# 需要调用HttpURLConnection.disconnect()吗？
-
 > 翻译自[kingori.co](https://kingori.co/minutae/2013/04/httpurlconnection-disconnect/)
 
 额，虽然要看情况，但是一般来说...

@@ -8,7 +8,10 @@
     <title>Kirovj</title>
     <meta name="description" content="kirovj's blog" />
     <link rel="icon" href="/static/fav.ico" />
+    <link rel="stylesheet" href="/static/css/custom.css">
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/fonts.css">
+
     <meta property="og:site_name" content="kirovj's blog">
     <meta property="og:title" content="kirovj's blog">
     <meta property="og:description" content="kirovj's blog">
@@ -16,48 +19,52 @@
 </head>
 
 <body>
-    <main id="main" role="main">
-        <header role="banner">
-            <h3 style="margin-top:0;">
-                <a href="/" title="Home">Kirovj</a>
-                <br />
-                <small>Write whatever I want.</small>
+    <header class="masthead">
+        <h1><a href="/">Kirovj</a></h1>
+        <p class="tagline">There is only one thing in the world worse than being talked about, and that is not being
+            talked about.</p>
 
-                <small style="float:right;">
-                    <a href="https://github.com/kirovj">Github</a>
-                </small>
-                <br />
-            </h3>
+        <nav class="menu">
+            <ul>
+                <li><a href="https://github.com/kirovj">Github</a></li>
+                <li><a href="/note">Notes</a></li>
+            </ul>
+        </nav>
+    </header>
+    <article class="main">
+        <header class="title">
 
-            <h2 class="note">{{ .note.Main }}</h2>
+
         </header>
-        <hr />
+        <p><img src="/static/img/liberty_or_death_sub.jpg" alt=""></p>
+        <blockquote>
+            <p>{{ .note.Main }}
+                ——<em>{{ .note.Source }}</em></p>
+        </blockquote>
 
-        <ul class="homepage-list">
+        <ul>
             {{range $blog := .blogs}}
             <li>
+                <span class="date">{{$blog.Date}}</span>
                 <a href="/blog/{{$blog.Title}}">{{$blog.Title}}</a>
-                <time>{{$blog.Date}}</time>
             </li>
             {{end}}
         </ul>
-        <hr />
+        <footer>
+            <hr>
+            <div class="copyright">© <a href="https://wuyiting.cn">Kirovj</a> | @2015 - </div>
 
-        <nav style="margin-bottom:1rem;" role="navigation">
-            <a href="/note">Note</a>
-            <!--        <span>&middot;</span>-->
-        </nav>
-
-        <footer role="contentinfo">
-            <small>
-                <a href="https://beian.miit.gov.cn/">浙ICP备18030011号.</a> <a
-                    href="http://www.beian.gov.cn/portal/recordQuery">浙公网安备 33011002013470</a>.<br />
-                Built with <a href="https://github.com/kirovj/kgb">KGB</a>. Theme by <a
-                    href="https://github.com/hiplon/lighthouse100-theme">HKL</a> <br />
-                Maintained with &hearts; for both web & real life.<br />
-            </small>
         </footer>
-    </main>
+    </article>
+    <!-- <footer role="contentinfo">
+        <small>
+            <a href="https://beian.miit.gov.cn/">浙ICP备18030011号.</a> <a
+                href="http://www.beian.gov.cn/portal/recordQuery">浙公网安备 33011002013470</a>.<br />
+            Built with <a href="https://github.com/kirovj/kgb">KGB</a>. Theme by <a
+                href="https://github.com/hiplon/lighthouse100-theme">HKL</a> <br />
+            Maintained with &hearts; for both web & real life.<br />
+        </small>
+    </footer> -->
 </body>
 
 </html>
