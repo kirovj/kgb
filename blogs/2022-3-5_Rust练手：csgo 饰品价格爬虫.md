@@ -121,13 +121,13 @@ impl DbHelper {
         let mut stmt = self
             .conn
             .prepare(
-                "SELECT id from Item \
-            where name = ?1 \
-            and class = ?2 \
-            and typo = ?3 \
-            and ware = ?4 \
-            and quality = ?5 \
-            and rarity = ?6 \
+                "SELECT id from Item
+            where name = ?1
+            and class = ?2
+            and typo = ?3
+            and ware = ?4
+            and quality = ?5
+            and rarity = ?6
             and stat_trak = ?7",
             )
             .unwrap();
@@ -160,8 +160,8 @@ impl DbHelper {
 
     pub fn add_item(&self, item: &Item) {
         self.conn.execute(
-            "INSERT INTO Item \
-            (name, class, typo, ware, quality, rarity, stat_trak) \
+            "INSERT INTO Item
+            (name, class, typo, ware, quality, rarity, stat_trak)
             VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7)",
             params![
                 item.name,
