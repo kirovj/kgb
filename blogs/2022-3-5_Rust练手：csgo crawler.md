@@ -246,7 +246,11 @@ pub trait Crawl {
 }
 ```
 
-## Warning: License GPL-2.0
+## License
+
+    GPL-2.0
+
+## Warning
 
 爬虫写得好──牢饭吃得早，切记。所以：
 
