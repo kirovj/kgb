@@ -162,7 +162,7 @@ func main() {
 	go func() {
 		for {
 			update()
-			time.Sleep(time.Minute * 5)
+			time.Sleep(time.Minute * 10)
 		}
 	}()
 
