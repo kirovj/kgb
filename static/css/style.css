@@ -23,9 +23,6 @@ ul {
     margin-block-start: -1em;
     margin-block-end: -1em;
 }
-article {
-    margin-block-start: -1em;
-}
 pre {
     background: white;
     overflow: scroll;
