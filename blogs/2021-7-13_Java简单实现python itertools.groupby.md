@@ -1,5 +1,3 @@
-# Java简单实现python itertools.groupby()
-
 ```python
 class groupby(object):
     """

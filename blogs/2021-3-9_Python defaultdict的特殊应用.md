@@ -1,6 +1,4 @@
-# Python defaultdict的特殊应用
-
-v2上看到的，记录一下。
+> v2上看到的，记录一下。
 
 [最近发现 defaultdict 的一个奇技淫巧](https://www.v2ex.com/t/759173)
 
