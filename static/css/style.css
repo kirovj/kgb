@@ -19,10 +19,6 @@ main {
     max-width: 40rem;
     padding: 0.8rem;
 }
-ul {
-    margin-block-start: -1em;
-    margin-block-end: -1em;
-}
 pre {
     background: white;
     overflow: scroll;
