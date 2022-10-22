@@ -266,4 +266,4 @@ I take no responsibility.
 我不负任何责任。
 ```
 
-> Github: [github.com/kirovj/csgo-crawler](https://github.com/kirovj/csgo-crawler)
+> Github: [github.com/kirovj/csgo-crawler](https://github.com/kirovj/rscsgo)
