@@ -161,8 +161,8 @@ func main() {
 	// update blogs
 	go func() {
 		for {
-			update()
 			time.Sleep(time.Minute * 10)
+			update()
 		}
 	}()
 
