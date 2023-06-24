@@ -2,10 +2,7 @@ html,
 body {
     background: #fffaf7;
     color: #2d2d2d;
-    /* font: "Operator Mono Lig", 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol"; */
-    font-family: "LXGW WenKai", "LXGW WenKai Lite", "LXGW WenKai TC", "LXGW WenKai Screen", sans-serif;
+    font-family: "LXGW WenKai", "LXGW WenKai Screen", sans-serif;
 }
 
 a,
